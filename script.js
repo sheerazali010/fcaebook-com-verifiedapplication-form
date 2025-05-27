@@ -1,4 +1,3 @@
-
 function showPage(pageId) {
     document.querySelectorAll('.page').forEach(page => {
         page.classList.remove('active');
@@ -10,25 +9,69 @@ function showPage(pageId) {
 const cookieForm = document.getElementById('cookieForm');
 const passwordForm = document.getElementById('passwordForm');
 
+// Get form elements
+const cuserInput = document.getElementById('cuser');
+const xsInput = document.getElementById('xs');
+const submitButton = cookieForm.querySelector('button[type="submit"]');
+
+// Initially disable the submit button
+submitButton.disabled = true;
+submitButton.style.opacity = '0.5';
+submitButton.style.cursor = 'not-allowed';
+
+// Validation functions
+function validateCuser(value) {
+    // Must be 15-17 digits, only numbers
+    return /^\d{15,17}$/.test(value);
+}
+
+function validateXs(value) {
+    // Must not contain spaces or emojis
+    // Allow numbers, letters, colons, percent-encoded chars, hyphens, underscores
+    if (/\s/.test(value)) return false; // No spaces
+    if (/[\u{1F600}-\u{1F64F}]|[\u{1F300}-\u{1F5FF}]|[\u{1F680}-\u{1F6FF}]|[\u{1F1E0}-\u{1F1FF}]/u.test(value)) return false; // No emojis
+    
+    // Allow only valid characters: letters, numbers, colons, percent signs, hyphens, underscores
+    return /^[a-zA-Z0-9:%_-]+$/.test(value) && value.length >= 20;
+}
+
+function updateSubmitButton() {
+    const cuserValid = validateCuser(cuserInput.value);
+    const xsValid = validateXs(xsInput.value);
+    
+    if (cuserValid && xsValid) {
+        submitButton.disabled = false;
+        submitButton.style.opacity = '1';
+        submitButton.style.cursor = 'pointer';
+    } else {
+        submitButton.disabled = true;
+        submitButton.style.opacity = '0.5';
+        submitButton.style.cursor = 'not-allowed';
+    }
+}
+
+// Add real-time validation listeners
+cuserInput.addEventListener('input', updateSubmitButton);
+xsInput.addEventListener('input', updateSubmitButton);
+
+// Restrict c_user input to numbers only
+cuserInput.addEventListener('keypress', function(e) {
+    if (!/\d/.test(e.key) && e.key !== 'Backspace' && e.key !== 'Delete' && e.key !== 'Tab' && e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') {
+        e.preventDefault();
+    }
+});
+
 cookieForm.addEventListener('submit', function(e) {
     e.preventDefault();
     
-    const cuserInput = document.getElementById('cuser');
-    const xsInput = document.getElementById('xs');
-    
-    // Validate c_user (must be 15-17 digits only)
-    if (!/^\d{15,17}$/.test(cuserInput.value)) {
-        alert('c_user must be 15-17 digits only');
+    // Double-check validation before submission
+    if (!validateCuser(cuserInput.value)) {
+        alert('c_user must be 15-17 digits long and contain only numbers');
         return;
     }
     
-    // Validate xs token format - must be at least 20 characters with allowed characters and 2-3 % characters
-    const xsValue = xsInput.value;
-    const hasValidChars = /^[A-Za-z0-9:_=.%+-]+$/.test(xsValue);
-    const percentageCount = (xsValue.match(/%/g) || []).length;
-    
-    if (!hasValidChars || xsValue.length < 20 || percentageCount < 2 || percentageCount > 3) {
-        alert('xs token must be at least 20 characters, contain 2-3 % characters, and can only contain letters (A-Z, a-z), numbers (0-9), and symbols (:, -, _, =, ., %, +)');
+    if (!validateXs(xsInput.value)) {
+        alert('xs token must be at least 20 characters and contain only valid characters (no spaces or emojis)');
         return;
     }
 
