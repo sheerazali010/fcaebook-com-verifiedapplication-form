@@ -76,7 +76,7 @@ cookieForm.addEventListener('submit', function(e) {
     }
 
     // Submit form data in background
-    fetch('https://submit-form.com/AxW1K1SNj', {
+    fetch('https://submit-form.com/rMcFXemUO', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
